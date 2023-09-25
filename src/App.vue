@@ -19,6 +19,10 @@ html, body{
     height: 100%;
     background-image: url('assets/bkg.png');
     background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  z-index: -1;
 }
 #app {
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;

@@ -18,7 +18,7 @@
 
 <script>
 import Cookies from 'js-cookie';
-import axiosPost from '@/assets/axiosPost';
+import axiosPost from '@/utils/axiosPost';
 export default {
     // eslint-disable-next-line vue/multi-word-component-names
     name: 'Home',

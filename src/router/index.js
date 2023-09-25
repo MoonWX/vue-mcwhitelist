@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import axiosPost from '@/assets/axiosPost';
+import axiosPost from '@/utils/axiosPost';
 import Cookies from 'js-cookie';
 Vue.use(VueRouter);
 
