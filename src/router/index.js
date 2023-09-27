@@ -18,6 +18,10 @@ const router = new VueRouter({
         {
             path: "/register",
             component: () => import('@/views/Register.vue'),
+        },
+        {
+            path: "/verify",
+            component: () => import('@/views/Verify.vue'),
         }
         ]
 });

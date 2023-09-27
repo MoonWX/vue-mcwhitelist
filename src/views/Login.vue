@@ -18,10 +18,6 @@
             </el-main>
             <el-footer></el-footer>
         </el-container>
-<!--        <input type="text" v-model="username" placeholder="Username">-->
-<!--        <input type="password" v-model="password" placeholder="Password">-->
-<!--        <button @click="sendData">click</button>-->
-<!--        <button @click="validateData">click2</button>-->
     </div>
 </template>
 
@@ -47,7 +43,7 @@ export default {
             }
             else {
                 console.log('登录失败' + res)
-                this.failMsg()
+                this.failMsg(res)
 
             }
         },
@@ -62,11 +58,11 @@ export default {
                 type: 'success'
             });
         },
-        failMsg() {
+        failMsg(res) {
             const h = this.$createElement;
             this.$notify.error({
                 title: '登录失败！',
-                message: h('i', {style: 'color: teal'}, '用户名或密码错误')
+                message: h('i', {style: 'color: teal'}, res)
             });
         }
     },
@@ -78,8 +74,8 @@ export default {
 #card {
     //height: 100vh; /* 设置card的高度为视口高度，保证垂直居中可以生效 */
     display: flex;
-    justify-content: center; /* 水平居中 */
-    align-items: center; /* 垂直居中 */
+    justify-content: center;
+    align-items: center;
     width: 70%;
     height: 70vh;
     margin: auto;
