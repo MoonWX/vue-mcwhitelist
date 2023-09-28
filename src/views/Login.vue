@@ -30,10 +30,18 @@ export default {
         return {
             username: '',
             password: '',
+          fullscreenLoading: false
         };
     },
     methods: {
+      loadingFullScreen() {
+        this.fullscreenLoading = true;
+        setTimeout(() => {
+          this.fullscreenLoading = false;
+        }, 2000);
+      },
         async sendData() {
+            this.loadingFullScreen()
             let res = await axiosPost('login', {username: this.username, password: this.password});
             console.log(JSON.stringify(res))
             if (res.status === 200) {
