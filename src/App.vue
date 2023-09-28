@@ -19,6 +19,8 @@ html, body{
     height: 100%;
     background-image: url('assets/bkg.png');
     background-size: cover;
+  //backdrop-filter: opacity();
+  //-webkit-filter: opacity(30%);
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;

@@ -3,15 +3,24 @@
         <el-container>
             <el-header></el-header>
             <el-main>
+              <div id="card">
                 <div class="container">
+                  <div class="verifyContainer">
+                    <h1>验 证</h1>
                     <el-input v-model="mail" placeholder="邮箱"></el-input>
                     <el-input v-model="gameName" placeholder="正版游戏名"></el-input>
-                    <el-button @click="sendMail">发送</el-button>
-                    <!--                    TODO: 发送中的时候转圈！-->
-                    <!--                    TODO: 这里要加一分钟验证码限制！-->
-                    <el-input v-model="verificationCode" placeholder="验证码"></el-input>
-                    <el-button @click="verify">验证</el-button>
+                    <div class="verify-code">
+                      <div class="item">
+                    <el-input v-model="verificationCode" placeholder="验证码" :id="{'disabled-style':getCodeBtnDisable}"></el-input>
+                      </div>
+                      <div class="item">
+                    <el-button type="primary" @click="sendMail" :class="{'disabled-style':getCodeBtnDisable}" :disabled="getCodeBtnDisabled">{{codeBtnWord}}</el-button>
+                    </div>
+                    </div>
+                    <el-button type="primary" @click="verify">验证</el-button>
                 </div>
+                </div>
+              </div>
             </el-main>
             <el-footer></el-footer>
         </el-container>
@@ -31,6 +40,10 @@ export default {
             mail: '',
             verificationCode: '',
             gameName: '',
+            fullscreenLoading: false,
+            codeBtnWord: '获取验证码邮件',
+            getCodeBtnDisable: false,
+            waitTime:61,
         };
     },
     computed: {
@@ -51,6 +64,12 @@ export default {
         },
     },
     methods: {
+      loadingFullScreen() {
+        this.fullscreenLoading = true;
+        setTimeout(() => {
+          this.fullscreenLoading = false;
+        }, 2000);
+      },
         async getUUID(name) {
             return await axiosPost(`api/uuid/${name}`, {})
         },
@@ -84,8 +103,26 @@ export default {
                     type: 'error'
                 });
             }
+
+          // 因为下面用到了定时器，需要保存this指向
+          let that = this
+          that.waitTime--
+          that.getCodeBtnDisable = true
+          this.codeBtnWord = `${this.waitTime}s 后重新获取`
+          let timer = setInterval(function(){
+            if(that.waitTime>1){
+              that.waitTime--
+              that.codeBtnWord = `${that.waitTime}s 后重新获取`
+            }else{
+              clearInterval(timer)
+              that.codeBtnWord = '获取验证码'
+              that.getCodeBtnDisable = false
+              that.waitTime = 61
+            }
+          },1000)
         },
         async verify() {
+          this.loadingFullScreen()
             let res = await axiosPost('verify', {
                 code: this.verificationCode,
             })
@@ -120,7 +157,14 @@ export default {
   margin: auto;
   background-color: rgba(0, 0, 0, 0.4);
 }
-.login {
+.el-input.disabled-style{
+  width: 200px;
+}
+.el-button.disabled-style {
+  background-color: #EEEEEE;
+  color: #CCCCCC;
+}
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -129,9 +173,30 @@ export default {
   height: 100%;
   width: 100%;
   text-align: center;
+  .verify-code {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      justify-content: start;
+      align-content: start;
+
+    }
+    .item {
+      flex: 0 0 auto;
+
+      .el-input {
+        width: 280px;
+        margin-right: 10px;
+        margin-top: 0px;
+      }
+      .el-button{
+        margin-top: 0px;
+      }
+
+    }
   .el-input {
     display: flex;
-    width: 350px;
+    width: 430px;
     margin: 10px auto;
     background-color: transparent;
     .el-input__inner {
@@ -144,4 +209,5 @@ export default {
     margin-top: 10px;
   }
 }
+
 </style>

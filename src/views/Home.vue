@@ -5,11 +5,17 @@
             <el-header></el-header>
             <el-main>
                 <div class="container">
+                  <div class="item">
                     <h2>Your username is {{ username }}</h2>
+                  </div>
+                  <div class="item">
                     <h3 v-for="(item,index) in nameList">{{item}}-</h3>
                     <h3 v-for="(item,index) in idList">{{item}}-</h3>
+                  </div>
+                  <div class="item">
                     <el-button @click="testRcon">testRcon</el-button>
                     <el-button @click="verify">verify</el-button>
+                  </div>
                 </div>
             </el-main>
             <el-footer></el-footer>
@@ -89,12 +95,19 @@ export default {
 <style scoped>
 .container {
     display: flex;
-    justify-content: center;
-    align-items: center;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: space-between;
     width: 70%;
     height: 70vh;
     margin: auto;
     background-color: rgba(0, 0, 0, 0.4);
     color: white;
+}
+.item {
+  flex: 0 0 auto;
+  margin: 10px;
 }
 </style>
