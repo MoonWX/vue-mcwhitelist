@@ -7,7 +7,7 @@
                 <div class="container">
                   <div class="verifyContainer">
                     <h1>验 证</h1>
-                    <el-input v-model="mail" placeholder="邮箱"></el-input>
+                    <el-input v-model="mail" placeholder="吉大邮箱"></el-input>
                     <el-input v-model="gameName" placeholder="正版游戏名"></el-input>
                     <div class="verify-code">
                       <div class="item">
@@ -30,7 +30,7 @@
 <script>
 
 import axiosPost from "@/utils/axiosPost";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 
 export default {
     // eslint-disable-next-line vue/multi-word-component-names
@@ -44,12 +44,8 @@ export default {
             codeBtnWord: '获取验证码邮件',
             getCodeBtnDisable: false,
             waitTime:61,
+            username: ''
         };
-    },
-    computed: {
-        username() {
-            return Cookies.get('username');
-        },
     },
     watch: {
         username() {
@@ -75,7 +71,7 @@ export default {
         },
         async sendMail() {
             let uuid = await this.getUUID(this.gameName)
-            if (!uuid.data.id) {
+            if (uuid.response && uuid.response.status !== 200) {
                 this.$notify({
                     title: '发送失败！',
                     message: '请检查你的正版游戏名是否正确或与服务器连接发生错误！',
@@ -141,7 +137,15 @@ export default {
             }
             console.log(res)
         },
-    }
+        async getUsername() {
+            const res = await axiosPost('isLogin', {});
+            if (res && res.data.username)
+                this.username = res.data.username
+        }
+    },
+    mounted() {
+        this.getUsername();
+    },
 }
 
 </script>

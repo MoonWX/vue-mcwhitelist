@@ -6,16 +6,17 @@
             <el-main>
                 <div class="container">
                   <div class="item">
-                    <h2>Your username is {{ username }}</h2>
+                    <h2>欢迎，{{ username }}</h2>
                   </div>
                   <div class="item">
-                    <h3 v-for="(item,index) in nameList">{{item}}-</h3>
-                    <h3 v-for="(item,index) in idList">{{item}}-</h3>
+                    <h3>您绑定的游戏账号有：</h3>
+                    <h3 v-for="(item,index) in nameList">{{item}}</h3>
+<!--                    <h3 v-for="(item,index) in idList">{{item}}</h3>-->
                   </div>
                   <div class="item">
-                    <el-button @click="testRcon">testRcon</el-button>
-                    <el-button @click="verify">verify</el-button>
+                    <el-button @click="verify">添加账号</el-button>
                   </div>
+                    <el-link @click="logout" style="color:white;">注销</el-link>
                 </div>
             </el-main>
             <el-footer></el-footer>
@@ -24,7 +25,7 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 import axiosPost from '@/utils/axiosPost';
 export default {
     // eslint-disable-next-line vue/multi-word-component-names
@@ -33,12 +34,8 @@ export default {
         return {
             idList: [], // 游戏uuid列表
             nameList: [], // 游戏名称列表
+            username: '',
         };
-    },
-    computed: {
-        username() {
-            return Cookies.get('username');
-        },
     },
     watch: {
         username() {
@@ -73,7 +70,7 @@ export default {
                 for (let i = 0; i < this.idList.length; i++) {
                     const id = this.idList[i];
                     const info = await axiosPost(`api/username/${id}`, {});
-                    this.nameList.push(info.data.id);
+                    this.nameList.push(info.data.name);
                 }
                 console.log('nameList:');
                 console.log(this.nameList)
@@ -84,10 +81,20 @@ export default {
         },
         verify() {
             this.$router.push({path: '/verify'});
+        },
+        async getUsername() {
+            const res = await axiosPost('isLogin', {});
+            if (res && res.data.username)
+            this.username = res.data.username
+        },
+        async logout() {
+            await axiosPost('logout', {});
+            this.$router.push({path: '/login'}).catch(err => (console.log(err)));
         }
     },
     mounted() {
         this.getInformation();
+        this.getUsername();
     }
 };
 </script>
