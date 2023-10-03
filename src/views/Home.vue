@@ -16,10 +16,15 @@
                   <div class="item">
                     <el-button @click="verify">添加账号</el-button>
                   </div>
-                    <el-link @click="logout" style="color:white;">注销</el-link>
+                  <div class="logout">
+                    <el-link @click="logout" style="color: orange"> 注销 </el-link>
+                  </div>
                 </div>
+
             </el-main>
-            <el-footer></el-footer>
+            <el-footer>
+
+            </el-footer>
         </el-container>
     </div>
 </template>
@@ -112,9 +117,22 @@ export default {
     margin: auto;
     background-color: rgba(0, 0, 0, 0.4);
     color: white;
+  border-radius: 8px;
+}
+.logout{
+  position: fixed;
+  bottom: 0;
+  height: 22vh;
+  margin: 24px;
+  display: block;
+  text-align: left;
+  line-height: 24px;
+  font-size: 14px;
+  color: orange;
 }
 .item {
   flex: 0 0 auto;
-  margin: 10px;
+  margin: 6px;
 }
+
 </style>

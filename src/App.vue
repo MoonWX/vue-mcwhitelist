@@ -1,6 +1,12 @@
 <template>
   <div id="app">
     <router-view />
+    <div class="footer">
+      <div class="fri">
+        <span>友情连接：  </span>
+        <a class="fri-link" href="https://tarsgo.team" target="_blank">吉甲大师软件组</a>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -12,6 +18,34 @@ export default {
 </script>
 
 <style>
+.footer{
+  height: 72px;
+  width: 100%;
+  background-color: rgb(35, 35, 39);
+  position: fixed;
+  bottom: 0;
+  opacity: 0.8;
+}
+.fri{
+  margin: 24px;
+  display: block;
+  text-align: left;
+  line-height: 24px;
+  font-size: 14px;
+  color: gray;
+
+}
+.fri-link{
+  font-size: 14px;
+  color: lightgray;
+  letter-spacing: .5px;
+  text-decoration: none;
+  transition: color .3s;
+  margin-bottom: 8px;
+}
+.fri-link:hover{
+  color: #ff6a00 !important;
+}
 html, body{
     margin: 0;
     padding: 0;

@@ -71,6 +71,7 @@ export default {
         },
         async sendMail() {
             let uuid = await this.getUUID(this.gameName)
+
             if (uuid.response && uuid.response.status !== 200) {
                 this.$notify({
                     title: '发送失败！',
@@ -85,13 +86,38 @@ export default {
                 gameID: uuid.data.id,
             })
             console.log('res')
-            console.log(res)
+          console.log(res)
+          console.log(res.data)
+          console.log(res.code)
+          if (res.code === "ERR_BAD_RESPONSE"){
+            this.$notify({
+              title: '发送失败！',
+              message: '500错误！',
+              type: 'error'
+            });
+          }
             if (res.data.code === 0) { // 发送成功
                 this.$notify({
                     title: '发送成功！',
                     message: '请注意查收邮件！如未看到，请查看垃圾箱！',
                     type: 'success'
                 });
+              // 因为下面用到了定时器，需要保存this指向
+              let that = this
+              that.waitTime--
+              that.getCodeBtnDisable = true
+              this.codeBtnWord = `${this.waitTime}s 后重新获取`
+              let timer = setInterval(function(){
+                if(that.waitTime>1){
+                  that.waitTime--
+                  that.codeBtnWord = `${that.waitTime}s 后重新获取`
+                }else{
+                  clearInterval(timer)
+                  that.codeBtnWord = '获取验证码'
+                  that.getCodeBtnDisable = false
+                  that.waitTime = 61
+                }
+              },1000)
             } else {
                 this.$notify({ // 发送失败
                     title: '发送失败！',
@@ -100,22 +126,7 @@ export default {
                 });
             }
 
-          // 因为下面用到了定时器，需要保存this指向
-          let that = this
-          that.waitTime--
-          that.getCodeBtnDisable = true
-          this.codeBtnWord = `${this.waitTime}s 后重新获取`
-          let timer = setInterval(function(){
-            if(that.waitTime>1){
-              that.waitTime--
-              that.codeBtnWord = `${that.waitTime}s 后重新获取`
-            }else{
-              clearInterval(timer)
-              that.codeBtnWord = '获取验证码'
-              that.getCodeBtnDisable = false
-              that.waitTime = 61
-            }
-          },1000)
+
         },
         async verify() {
           this.loadingFullScreen()
