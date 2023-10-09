@@ -7,16 +7,9 @@
                 <div class="container">
                   <div class="verifyContainer">
                     <h1>验 证</h1>
-                    <el-input v-model="mail" placeholder="吉大邮箱" class="email"></el-input>
-                      <el-select v-model="value" placeholder="请选择" class="email">
-                          <el-option
-                              v-for="item in options"
-                              :key="item.value"
-                              :label="item.label"
-                              :value="item.value">
-                          </el-option>
-                      </el-select>
-                      <a href="https://mails.jlu.edu.cn/">吉林大学学生邮箱网址</a>
+                    <el-autocomplete v-model="mail" placeholder="吉大邮箱" :fetch-suggestions="querySearchEmail" :trigger-on-focus="false"></el-autocomplete>
+<!--                      <br>-->
+                      <a class="mailSite" href="https://mails.jlu.edu.cn/">吉林大学学生邮箱网址</a>
                     <el-input v-model="gameName" placeholder="正版游戏名"></el-input>
                     <div class="verify-code">
                       <div class="item">
@@ -28,6 +21,8 @@
                     </div>
                       <div style="font-size: 14px;">点击验证即代表您已阅读并同意<a class="openNotify" @click="openNotify">注册须知</a></div>
                     <el-button type="primary" @click="verify">验证</el-button>
+                      <br>
+                    <el-button @click="backHome" class="backHome">返回首页</el-button>
                 </div>
                 </div>
               </div>
@@ -70,7 +65,27 @@ export default {
         },
     },
     methods: {
-      loadingFullScreen() {
+        // 邮箱自动填充后缀名
+        querySearchEmail(queryString, callback) {
+            const emailList = [
+                { value: '@mails.jlu.edu.cn' },
+                { value: '@jlu.edu.cn' },
+            ]
+            let results = []
+            let queryList = []
+            emailList.map(item => {
+                queryList.push({ value: queryString.split('@')[0] + item.value })
+            })
+            results = queryString ? queryList.filter(this.createFilter(queryString)) : queryList;
+            callback(results);
+        },
+        // 邮箱填写过滤
+        createFilter(queryString) {
+            return (item) => {
+                return (item.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+            };
+        },
+        loadingFullScreen() {
         this.fullscreenLoading = true;
         setTimeout(() => {
           this.fullscreenLoading = false;
@@ -165,6 +180,9 @@ export default {
         },
         openNotify() {
           this.$router.push({path: '/about'});
+        },
+        backHome() {
+          this.$router.push({path: '/'});
         }
     },
     mounted() {
@@ -175,11 +193,6 @@ export default {
 </script>
 
 <style lang="scss">
-.email {
-    .el-input__inner{
-        width: 50%;
-    }
-}
 #card {
 //height: 100vh; /* 设置card的高度为视口高度，保证垂直居中可以生效 */
   display: flex;
@@ -202,6 +215,15 @@ export default {
   color: #409EFF;
   cursor: pointer;
   text-shadow: rgba(255,255,255,.5) 1px 1px 1px;
+}
+.mailSite {
+    color: #409EFF;
+    cursor: pointer;
+    text-shadow: rgba(255,255,255,.5) 1px 1px 1px;
+    text-decoration: underline;
+    height: 20px;
+    margin: 15px 0 10px 10px;
+    position: absolute;
 }
 .container {
   display: flex;
@@ -245,7 +267,7 @@ export default {
     }
   }
   .el-button{
-    margin-top: 10px;
+    margin-top: 20px;
   }
 }
 
