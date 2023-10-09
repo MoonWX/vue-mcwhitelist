@@ -14,7 +14,7 @@
 <!--                    <h3 v-for="(item,index) in idList">{{item}}</h3>-->
                   </div>
                   <div class="item">
-                    <el-button @click="verify">添加账号</el-button>
+                    <el-button @click="about">添加账号</el-button>
                   </div>
                   <div class="logout">
                     <el-link @click="logout" style="color: orange"> 注销 </el-link>
@@ -84,8 +84,8 @@ export default {
                 console.log(e);
             }
         },
-        verify() {
-            this.$router.push({path: '/verify'});
+        about() {
+            this.$router.push({path: '/about'});
         },
         async getUsername() {
             const res = await axiosPost('isLogin', {});

@@ -44,8 +44,13 @@ export default {
       },
         async sendData() {
           this.loadingFullScreen()
+            const passwdRule = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
             if (this.password !== this.passwordAgain) {
                 this.failMsg('请检查两次密码是否相同！')
+                return
+            }
+            else if (passwdRule.test(this.password) === false) {
+                this.failMsg('密码长度不得小于8位且必须包含数字和字母！请检查您输入的密码！')
                 return
             }
             let res = await axiosPost('register', {username:this.username, password:this.password})

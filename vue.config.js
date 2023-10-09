@@ -11,5 +11,13 @@ module.exports = defineConfig({
       cert: fs.readFileSync(path.join(__dirname, 'keys/cert.crt')),
       key: fs.readFileSync(path.join(__dirname, 'keys/cert.key'))
     }
+  },
+  chainWebpack: config => {
+    config
+        .plugin('html')
+        .tap(args => {
+          args[0].title= '吉林大学Minecraft同好会白名单验证'
+          return args
+        })
   }
 })

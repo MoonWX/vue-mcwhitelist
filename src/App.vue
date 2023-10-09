@@ -3,9 +3,16 @@
     <router-view />
     <div class="footer">
       <div class="fri">
-        <span>友情连接：  </span>
+        <span>友情链接：  </span>
         <a class="fri-link" href="https://tarsgo.team" target="_blank">吉甲大师软件组</a>
       </div>
+        <div class="qq">
+            吉林大学Minecraft同好会 <br>
+            QQ: 361033103
+        </div>
+        <div class="author">
+            Made by MoonWX & ChestZone
+        </div>
     </div>
   </div>
 </template>
@@ -28,12 +35,12 @@ export default {
 }
 .fri{
   margin: 24px;
-  display: block;
   text-align: left;
   line-height: 24px;
   font-size: 14px;
   color: gray;
-
+    user-select: none;
+    float: left;
 }
 .fri-link{
   font-size: 14px;
@@ -46,12 +53,32 @@ export default {
 .fri-link:hover{
   color: #ff6a00 !important;
 }
+.author {
+    margin: 24px;
+    user-select: none;
+    float: right;
+    line-height: 24px;
+    font-size: 14px;
+    color: gray;
+    text-align: left;
+}
+.qq {
+    float: left;
+    position: relative;
+    left: calc(50% - 300px);
+    margin: 12px;
+    line-height: 24px;
+    font-size: 14px;
+    color: aliceblue;
+    text-align: center;
+}
 html, body{
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    background-image: url('assets/bkg.png');
+    //background-image: url('https://cdn.moonwx.cn/img/jlumc/bkg.png');
+    background-image: url('./assets/bkg.png');
     background-size: cover;
   //backdrop-filter: opacity();
   //-webkit-filter: opacity(30%);

@@ -7,7 +7,16 @@
                 <div class="container">
                   <div class="verifyContainer">
                     <h1>验 证</h1>
-                    <el-input v-model="mail" placeholder="吉大邮箱"></el-input>
+                    <el-input v-model="mail" placeholder="吉大邮箱" class="email"></el-input>
+                      <el-select v-model="value" placeholder="请选择" class="email">
+                          <el-option
+                              v-for="item in options"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                          </el-option>
+                      </el-select>
+                      <a href="https://mails.jlu.edu.cn/">吉林大学学生邮箱网址</a>
                     <el-input v-model="gameName" placeholder="正版游戏名"></el-input>
                     <div class="verify-code">
                       <div class="item">
@@ -17,6 +26,7 @@
                     <el-button type="primary" @click="sendMail" :class="{'disabled-style':getCodeBtnDisable}" :disabled="getCodeBtnDisabled">{{codeBtnWord}}</el-button>
                     </div>
                     </div>
+                      <div style="font-size: 14px;">点击验证即代表您已阅读并同意<a class="openNotify" @click="openNotify">注册须知</a></div>
                     <el-button type="primary" @click="verify">验证</el-button>
                 </div>
                 </div>
@@ -152,6 +162,9 @@ export default {
             const res = await axiosPost('isLogin', {});
             if (res && res.data.username)
                 this.username = res.data.username
+        },
+        openNotify() {
+          this.$router.push({path: '/about'});
         }
     },
     mounted() {
@@ -161,7 +174,12 @@ export default {
 
 </script>
 
-<style>
+<style lang="scss">
+.email {
+    .el-input__inner{
+        width: 50%;
+    }
+}
 #card {
 //height: 100vh; /* 设置card的高度为视口高度，保证垂直居中可以生效 */
   display: flex;
@@ -175,9 +193,15 @@ export default {
 .el-input.disabled-style{
   width: 200px;
 }
+
 .el-button.disabled-style {
   background-color: #EEEEEE;
   color: #CCCCCC;
+}
+.openNotify {
+  color: #409EFF;
+  cursor: pointer;
+  text-shadow: rgba(255,255,255,.5) 1px 1px 1px;
 }
 .container {
   display: flex;
