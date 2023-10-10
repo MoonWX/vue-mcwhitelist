@@ -16,7 +16,7 @@
                     <el-input v-model="verificationCode" placeholder="验证码" :id="{'disabled-style':getCodeBtnDisable}"></el-input>
                       </div>
                       <div class="item">
-                    <el-button type="primary" @click="sendMail" :class="{'disabled-style':getCodeBtnDisable}" :disabled="getCodeBtnDisabled">{{codeBtnWord}}</el-button>
+                    <el-button type="primary" @click="sendMail" :class="{'disabled-style':getCodeBtnDisable}">{{codeBtnWord}}</el-button>
                     </div>
                     </div>
                       <div style="font-size: 14px;">点击验证即代表您已阅读并同意<a class="openNotify" @click="openNotify">注册须知</a></div>
@@ -48,7 +48,7 @@ export default {
             fullscreenLoading: false,
             codeBtnWord: '获取验证码邮件',
             getCodeBtnDisable: false,
-            waitTime:61,
+            waitTime: 61,
             username: ''
         };
     },
@@ -117,6 +117,10 @@ export default {
             console.log('res')
           console.log(res)
           console.log(res.data)
+          console.log(Date.now()-res.data.lastSendTime)
+          console.log(60-((Date.now()-res.data.lastSendTime)/1000))
+          let lastTime = res.data.lastSendTime
+          console.log(lastTime)
           console.log(res.code)
           if (res.code === "ERR_BAD_RESPONSE"){
             this.$notify({
@@ -132,6 +136,7 @@ export default {
                     type: 'success'
                 });
               // 因为下面用到了定时器，需要保存this指向
+              console.log(1111111111)
               let that = this
               that.waitTime--
               that.getCodeBtnDisable = true
@@ -153,6 +158,23 @@ export default {
                     message: res.data.msg,
                     type: 'error'
                 });
+                this.waitTime = Math.trunc(60-(Date.now()-lastTime)/1000)
+              let that = this
+              that.waitTime--
+              that.getCodeBtnDisable = true
+              this.codeBtnWord = `${this.waitTime}s 后重新获取`
+              let timer = setInterval(function(){
+                if(that.waitTime>1){
+                  // console.log(60-(Date.now()-lastTime)/1000)
+                  that.waitTime--
+                  that.codeBtnWord = `${that.waitTime}s 后重新获取`
+                }else{
+                  clearInterval(timer)
+                  that.codeBtnWord = '获取验证码'
+                  that.getCodeBtnDisable = false
+                  that.waitTime = 61
+                }
+              },1000)
             }
 
 
