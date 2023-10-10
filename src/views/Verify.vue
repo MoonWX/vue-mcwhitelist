@@ -9,7 +9,7 @@
                     <h1>验 证</h1>
                     <el-autocomplete v-model="mail" placeholder="吉大邮箱" :fetch-suggestions="querySearchEmail" :trigger-on-focus="false"></el-autocomplete>
 <!--                      <br>-->
-                      <a class="mailSite" href="https://mails.jlu.edu.cn/">吉林大学学生邮箱网址</a>
+                      <a class="mailSite" href="https://mails.jlu.edu.cn/" target="_blank">吉林大学学生邮箱网址</a>
                     <el-input v-model="gameName" placeholder="正版游戏名"></el-input>
                     <div class="verify-code">
                       <div class="item">
@@ -227,6 +227,7 @@ export default {
 
 }
 .container {
+  font-family: 'mcFont';
   display: flex;
   justify-content: center;
   align-items: center;
