@@ -105,34 +105,70 @@ export default {
 </script>
 
 <style scoped>
-.container {
+@media (min-width: 784px) {
+  .container {
     display: flex;
-  flex-wrap: nowrap;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  align-content: space-between;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: space-between;
     width: 70%;
     height: 70vh;
     margin: auto;
     background-color: rgba(0, 0, 0, 0.4);
     color: white;
-  border-radius: 8px;
-}
-.logout{
-  position: fixed;
-  bottom: 0;
-  height: 22vh;
-  margin: 24px;
-  display: block;
-  text-align: left;
-  line-height: 24px;
-  font-size: 14px;
-  color: orange;
-}
-.item {
-  flex: 0 0 auto;
-  margin: 6px;
-}
+    border-radius: 8px;
+  }
 
+  .logout {
+    position: fixed;
+    bottom: 0;
+    height: 22vh;
+    margin: 24px;
+    display: block;
+    text-align: left;
+    line-height: 24px;
+    font-size: 14px;
+    color: orange;
+  }
+
+  .item {
+    flex: 0 0 auto;
+    margin: 6px;
+  }
+}
+@media (max-width: 784px) {
+  .container {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: space-between;
+    width: 95%;
+    height: 75vh;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    border-radius: 8px;
+  }
+
+  .logout {
+    position: fixed;
+    bottom: 0;
+    height: 22vh;
+    margin: 24px;
+    display: block;
+    text-align: left;
+    line-height: 24px;
+    font-size: 14px;
+    color: orange;
+  }
+
+  .item {
+    flex: 0 0 auto;
+    margin: 6px;
+  }
+}
 </style>

@@ -86,38 +86,82 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#card {
-  //height: 100vh; /* 设置card的高度为视口高度，保证垂直居中可以生效 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 70%;
-  height: 70vh;
-  margin: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-.reg {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  color: white;
-  height: 100%;
-  width: 100%;
-  text-align: center;
-  .el-input {
+@media (min-width: 784px) {
+  #card {
+    //height: 100vh; /* 设置card的高度为视口高度，保证垂直居中可以生效 */
     display: flex;
-    width: 350px;
-    margin: 10px auto;
-    background-color: transparent;
-    .el-input__inner {
-      $font-size: font-size;
-      background-color: rgba(255, 255, 255, 0.2);
-      color: white;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    height: 70vh;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  .reg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: white;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+
+    .el-input {
+      display: flex;
+      width: 350px;
+      margin: 10px auto;
+      background-color: transparent;
+
+      .el-input__inner {
+        $font-size: font-size;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
+    }
+
+    .el-button {
+      margin-top: 10px;
     }
   }
-  .el-button{
-    margin-top: 10px;
+}
+@media (max-width: 784px) {
+  #card {
+    //height: 100vh; /* 设置card的高度为视口高度，保证垂直居中可以生效 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    height: 75vh;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  .reg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: white;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+
+    .el-input {
+      display: flex;
+      width: 240px;
+      margin: 10px auto;
+      background-color: transparent;
+
+      .el-input__inner {
+        $font-size: font-size;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
+    }
+
+    .el-button {
+      margin-top: 10px;
+    }
   }
 }
 </style>

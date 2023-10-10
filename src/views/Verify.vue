@@ -9,7 +9,10 @@
                     <h1>验 证</h1>
                     <el-autocomplete v-model="mail" placeholder="吉大邮箱" :fetch-suggestions="querySearchEmail" :trigger-on-focus="false"></el-autocomplete>
 <!--                      <br>-->
-                      <a class="mailSite" href="https://mails.jlu.edu.cn/" target="_blank">吉林大学学生邮箱网址</a>
+                    <a class="mailSite" href="https://mails.jlu.edu.cn/" target="_blank">吉林大学学生邮箱网址</a>
+                    <div class="mail-mobile">
+                      <a class="mail-mobile" href="https://mails.jlu.edu.cn/" target="_blank">吉林大学学生邮箱网址</a>
+                    </div>
                     <el-input v-model="gameName" placeholder="正版游戏名"></el-input>
                     <div class="verify-code">
                       <div class="item">
@@ -226,50 +229,52 @@ export default {
 </script>
 
 <style lang="scss">
-#card {
-//height: 100vh; /* 设置card的高度为视口高度，保证垂直居中可以生效 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 70%;
-  height: 70vh;
-  margin: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-.el-input.disabled-style{
-  width: 200px;
-}
+@media (min-width: 784px) {
+  #card {
+    //height: 100vh; /* 设置card的高度为视口高度，保证垂直居中可以生效 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    height: 70vh;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  .el-input.disabled-style {
+    width: 200px;
+  }
 
-.el-button.disabled-style {
-  background-color: #EEEEEE;
-  color: #CCCCCC;
-}
-.openNotify {
-  color: #409EFF;
-  cursor: pointer;
-  text-shadow: rgba(255,255,255,.5) 1px 1px 1px;
-}
-.mailSite {
+  .el-button.disabled-style {
+    background-color: #EEEEEE;
+    color: #CCCCCC;
+  }
+  .openNotify {
     color: #409EFF;
     cursor: pointer;
-    text-shadow: rgba(255,255,255,.5) 1px 1px 1px;
+    text-shadow: rgba(255, 255, 255, .5) 1px 1px 1px;
+  }
+  .mailSite {
+    color: #409EFF;
+    cursor: pointer;
+    text-shadow: rgba(255, 255, 255, .5) 1px 1px 1px;
     text-decoration: underline;
     height: 20px;
     margin: 15px 0 10px 10px;
     position: absolute;
 
-}
-.container {
-  font-family: 'mcFont';
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  color: white;
-  height: 100%;
-  width: 100%;
-  text-align: center;
-  .verify-code {
+  }
+  .container {
+    font-family: 'mcFont';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: white;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+
+    .verify-code {
       display: flex;
       flex-wrap: wrap;
       flex-direction: row;
@@ -277,6 +282,7 @@ export default {
       align-content: start;
 
     }
+
     .item {
       flex: 0 0 auto;
 
@@ -285,24 +291,122 @@ export default {
         margin-right: 10px;
         margin-top: 0px;
       }
-      .el-button{
+
+      .el-button {
         margin-top: 0px;
       }
 
     }
-  .el-input {
-    display: flex;
-    width: 430px;
-    margin: 10px auto;
-    background-color: transparent;
-    .el-input__inner {
-    $font-size: font-size;
-      background-color: rgba(255, 255, 255, 0.2);
-      color: white;
+
+    .el-input {
+      display: flex;
+      width: 430px;
+      margin: 10px auto;
+      background-color: transparent;
+
+      .el-input__inner {
+        $font-size: font-size;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
+    }
+
+    .el-button {
+      margin-top: 20px;
     }
   }
-  .el-button{
-    margin-top: 20px;
+  .mail-mobile{
+    display: none;
+  }
+}
+
+@media (max-width: 784px) {
+  #card {
+    //height: 100vh; /* 设置card的高度为视口高度，保证垂直居中可以生效 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    height: 75vh;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  .el-input.disabled-style {
+    width: 200px;
+  }
+
+  .el-button.disabled-style {
+    background-color: #EEEEEE;
+    color: #CCCCCC;
+  }
+  .openNotify {
+    color: #409EFF;
+    cursor: pointer;
+    text-shadow: rgba(255, 255, 255, .5) 1px 1px 1px;
+  }
+  .mailSite{
+    display: none;
+  }
+  .mail-mobile {
+    color: #409EFF;
+    cursor: pointer;
+    text-align: right;
+    text-shadow: rgba(255, 255, 255, .5) 1px 1px 1px;
+    text-decoration: none;
+    height: 20px;
+
+  }
+  .container {
+    font-family: 'mcFont';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: white;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+
+    .verify-code {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      justify-content: start;
+      align-content: start;
+
+    }
+
+    .item {
+      flex: 0 0 auto;
+
+      .el-input {
+        width: 140px;
+        margin-right: 10px;
+        margin-top: 0px;
+      }
+
+      .el-button {
+        margin-top: 0px;
+      }
+
+    }
+
+    .el-input {
+      display: flex;
+      width: 292px;
+      margin: 10px auto;
+      background-color: transparent;
+
+      .el-input__inner {
+        $font-size: font-size;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
+    }
+
+    .el-button {
+      margin-top: 20px;
+    }
   }
 }
 

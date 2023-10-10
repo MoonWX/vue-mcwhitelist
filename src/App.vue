@@ -6,13 +6,24 @@
         <span>友情链接：  </span>
         <a class="fri-link" href="https://tarsgo.team" target="_blank">吉甲大师软件组</a>
       </div>
-        <div class="qq">
-            吉林大学Minecraft同好会 <br>
-            QQ: 361033103
-        </div>
-        <div class="author">
-            Made by MoonWX & ChestZone
-        </div>
+      <div class="qq">
+        吉林大学Minecraft同好会 <br>
+        QQ: 361033103
+      </div>
+      <div class="author">
+        Made by MoonWX & ChestZone
+      </div>
+    </div>
+    <div class="footer-mobile">
+      <div class="qq">
+        <span>友情链接：  </span>
+        <a class="fri-link" href="https://tarsgo.team" target="_blank">吉甲大师软件组</a><br>
+        吉林大学Minecraft同好会 <br>
+        QQ: 361033103<br>
+        Made by MoonWX & ChestZone
+      </div>
+      <div class="author">
+      </div>
     </div>
   </div>
 </template>
@@ -32,7 +43,9 @@ export default {
   font-style: normal;
 }
 @media (min-width: 784px) {
-
+  .footer-mobile{
+    display: none;
+  }
   .footer{
     height: 72px;
     width: 100%;
@@ -105,9 +118,11 @@ export default {
   }
 }
 @media (max-width: 784px){
-
   .footer{
-    height: 144px;
+    display: none;
+  }
+  .footer-mobile{
+    height: 136px;
     width: 100%;
     background-color: rgb(35, 35, 39);
     position: fixed;
@@ -149,8 +164,8 @@ export default {
   .qq {
     float: left;
     position: relative;
-    top: calc(50% - 38px);
-    left: calc(50% - 300px);
+    top: calc(50% - 60px);
+    left: calc(50% - 125px);
     margin: 12px;
     line-height: 24px;
     font-size: 14px;
