@@ -224,6 +224,7 @@ export default {
     height: 20px;
     margin: 15px 0 10px 10px;
     position: absolute;
+
 }
 .container {
   display: flex;

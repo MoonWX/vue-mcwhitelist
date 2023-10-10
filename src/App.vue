@@ -25,6 +25,12 @@ export default {
 </script>
 
 <style>
+@font-face {
+  font-family: 'mcFont';
+  src: url('./assets/minecraft.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
 .footer{
   height: 72px;
   width: 100%;
@@ -32,6 +38,7 @@ export default {
   position: fixed;
   bottom: 0;
   opacity: 0.8;
+  font-family: 'mcFont';
 }
 .fri{
   margin: 24px;
