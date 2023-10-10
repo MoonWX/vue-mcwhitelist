@@ -96,7 +96,11 @@ export default {
         },
         async sendMail() {
             let uuid = await this.getUUID(this.gameName)
-
+            this.$notify({
+              title: '发送中！',
+              message: '请稍等！',
+              type: 'success'
+            });
             if (uuid.response && uuid.response.status !== 200) {
                 this.$notify({
                     title: '发送失败！',
