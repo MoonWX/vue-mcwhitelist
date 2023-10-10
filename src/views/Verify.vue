@@ -16,13 +16,14 @@
                     <el-input v-model="verificationCode" placeholder="验证码" :id="{'disabled-style':getCodeBtnDisable}"></el-input>
                       </div>
                       <div class="item">
-                    <el-button type="primary" @click="sendMail" :class="{'disabled-style':getCodeBtnDisable}">{{codeBtnWord}}</el-button>
+                    <el-button type="primary" @click="sendMail" :class="{'disabled-style':getCodeBtnDisable}" :disabled="btnDisable">{{codeBtnWord}}</el-button>
                     </div>
                     </div>
                       <div style="font-size: 14px;">点击验证即代表您已阅读并同意<a class="openNotify" @click="openNotify">注册须知</a></div>
-                    <el-button type="primary" @click="verify">验证</el-button>
-                      <br>
+
+
                     <el-button @click="backHome" class="backHome">返回首页</el-button>
+                    <el-button type="primary" @click="verify">验证</el-button>
                 </div>
                 </div>
               </div>
@@ -49,7 +50,8 @@ export default {
             codeBtnWord: '获取验证码邮件',
             getCodeBtnDisable: false,
             waitTime: 61,
-            username: ''
+            username: '',
+          btnDisable: false
         };
     },
     watch: {
@@ -101,12 +103,14 @@ export default {
               message: '请稍等！',
               type: 'success'
             });
+            this.btnDisable=true
             if (uuid.response && uuid.response.status !== 200) {
                 this.$notify({
                     title: '发送失败！',
                     message: '请检查你的正版游戏名是否正确或与服务器连接发生错误！',
                     type: 'error'
                 });
+              this.btnDisable=false
                 return;
             }
             let res = await axiosPost('send', {
@@ -128,6 +132,7 @@ export default {
               message: '500错误！',
               type: 'error'
             });
+            this.btnDisable=false
           }
             if (res.data.code === 0) { // 发送成功
                 this.$notify({
@@ -147,7 +152,8 @@ export default {
                   that.codeBtnWord = `${that.waitTime}s 后重新获取`
                 }else{
                   clearInterval(timer)
-                  that.codeBtnWord = '获取验证码'
+                  that.codeBtnWord = '获取验证码邮件'
+                  that.btnDisable=false
                   that.getCodeBtnDisable = false
                   that.waitTime = 61
                 }
@@ -170,7 +176,8 @@ export default {
                   that.codeBtnWord = `${that.waitTime}s 后重新获取`
                 }else{
                   clearInterval(timer)
-                  that.codeBtnWord = '获取验证码'
+                  that.codeBtnWord = '获取验证码邮件'
+                  that.btnDisable=false
                   that.getCodeBtnDisable = false
                   that.waitTime = 61
                 }
