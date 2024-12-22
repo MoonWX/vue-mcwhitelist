@@ -1,24 +1,33 @@
-# vue-loginandregister
+# MC WhiteList 吉林大学Minecraft同好会服务器白名单注册
 
-## Project setup
+## 简介
 
-```cmd
-npm i
+本服务用途为吉林大学Minecraft同好会服务器白名单注册。QQ群号：361033103。
+
+## 注册须知
+
+1. 注册白名单您需要为吉大学生或MUA成员，且您的游戏账号为正版。
+2. 现只支持拥有吉大邮箱的用户自动注册，若您为吉大学生但没有吉大邮箱，或您为MUA成员，请联系QQ群内管理员手动注册。
+
+## 信息储存
+
+使用本服务即代表您同意我们在服务器上储存您的以下信息：
+
+- 您的吉大邮箱地址
+- 您的正版游戏名及UUID
+- 您在本服务中注册的账号及密码
+
+我们将会对您的信息进行保密，但是我们无法保证您的信息不会被泄露。
+
+## 账号删除
+
+删除绑定账号功能还未上线，如有需要请联系群内管理员处理。
+
+## 快速开发
+
+```bash
+npm i # 安装依赖
+npm run dev # 运行
+npm run build # 编译
+npm run lint # 代码检查
 ```
-
-### Compiles and hot-reloads for development
-
-```cmd
-npm run dev
-```
-
-### Compiles and minifies for production
-
-```cmd
-npm run build
-```
-
-### Lints and fixes files
-
-```cmd
-npm run lint
