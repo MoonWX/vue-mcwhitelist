@@ -37,8 +37,7 @@
 </template>
 
 <script>
-
-import axiosPost from "@/utils/axiosPost";
+import { post } from "@/utils/axiosService";
 // import Cookies from "js-cookie";
 
 export default {
@@ -97,7 +96,7 @@ export default {
         }, 2000);
       },
         async getUUID(name) {
-            return await axiosPost(`api/uuid/${name}`, {})
+            return await post(`api/uuid/${name}`, {})
         },
         async sendMail() {
             let uuid = await this.getUUID(this.gameName)
@@ -116,7 +115,7 @@ export default {
               this.btnDisable=false
                 return;
             }
-            let res = await axiosPost('send', {
+            let res = await post('send', {
                 mailAddress: this.mail,
                 gameName: this.gameName,
                 gameID: uuid.data.id,
@@ -191,7 +190,7 @@ export default {
         },
         async verify() {
           this.loadingFullScreen()
-            let res = await axiosPost('verify', {
+            let res = await post('verify', {
                 code: this.verificationCode,
             })
             if (res.data.result) {
@@ -210,7 +209,7 @@ export default {
             console.log(res)
         },
         async getUsername() {
-            const res = await axiosPost('isLogin', {});
+            const res = await post('isLogin', {});
             if (res && res.data.username)
                 this.username = res.data.username
         },

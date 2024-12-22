@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import axiosPost from '@/utils/axiosPost';
+import { post } from '@/utils/axiosService';
 export default {
     // eslint-disable-next-line vue/multi-word-component-names
     name: 'Register',
@@ -53,7 +53,7 @@ export default {
                 this.failMsg('密码长度不得小于8位且必须包含数字和字母！请检查您输入的密码！')
                 return
             }
-            let res = await axiosPost('register', {username:this.username, password:this.password})
+            let res = await post('register', {username:this.username, password:this.password})
             console.log(res)
             if (res.status === 200) {
                 console.log('注册成功')

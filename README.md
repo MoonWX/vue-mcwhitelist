@@ -1,24 +1,24 @@
 # vue-loginandregister
 
 ## Project setup
-```
-yarn install
+
+```cmd
+npm i
 ```
 
 ### Compiles and hot-reloads for development
-```
-yarn serve
+
+```cmd
+npm run dev
 ```
 
 ### Compiles and minifies for production
-```
-yarn build
+
+```cmd
+npm run build
 ```
 
 ### Lints and fixes files
-```
-yarn lint
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```cmd
+npm run lint

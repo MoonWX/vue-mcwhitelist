@@ -1,174 +1,181 @@
 <!-- eslint-disable -->
 <template>
-    <div>
-        <el-container>
-            <el-header></el-header>
-            <el-main>
-                <div class="container">
-                  <div class="item">
-                    <h2>欢迎，{{ username }}</h2>
-                  </div>
-                  <div class="item">
-                    <h3>您绑定的游戏账号有：</h3>
-                    <h3 v-for="(item,index) in nameList">{{item}}</h3>
-<!--                    <h3 v-for="(item,index) in idList">{{item}}</h3>-->
-                  </div>
-                  <div class="item">
-                    <el-button @click="about">添加账号</el-button>
-                  </div>
-                  <div class="logout">
-                    <el-link @click="logout" style="color: orange"> 注销 </el-link>
-                  </div>
-                </div>
+  <header class="mb-8">
+    <h1 class="text-3xl font-bold text-center text-white">
+      欢迎，{{ username }}
+    </h1>
+  </header>
 
-            </el-main>
-            <el-footer>
-
-            </el-footer>
-        </el-container>
+  <section class="mb-8 text-center">
+    <h3 class="text-xl font-semibold text-white mb-4">您绑定的游戏账号有：</h3>
+    <div class="space-y-2">
+      <div
+        v-for="(item, index) in nameList"
+        :key="index"
+        class="p-3 bg-white/10 rounded text-white"
+      >
+        {{ item }}
+      </div>
+      <div v-if="nameList.length === 0" class="p-3 text-gray-400">
+        暂无绑定账号
+      </div>
     </div>
+  </section>
+
+  <div class="text-center mb-8">
+    <button
+      @click="about"
+      class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+    >
+      添加账号
+    </button>
+  </div>
+
+  <div class="text-center">
+    <button
+      @click="logout"
+      class="text-orange-400 hover:text-orange-300 transition-colors"
+    >
+      注销
+    </button>
+  </div>
 </template>
 
-<script>
-// import Cookies from 'js-cookie';
-import axiosPost from '@/utils/axiosPost';
-export default {
-    // eslint-disable-next-line vue/multi-word-component-names
-    name: 'Home',
-    data() {
-        return {
-            idList: [], // 游戏uuid列表
-            nameList: [], // 游戏名称列表
-            username: '',
-        };
-    },
-    watch: {
-        username() {
-            if (!this.username) {
-                this.$notify({
-                    title: '登录过期！',
-                    message: '即将跳转至登录页...',
-                    type: 'warning'
-                });
-                this.$router.push({path: '/login'});
-            }
-        },
-    },
-    methods: {
-        sendData() {
-            axiosPost('login',{username: this.username, password: this.password});
-        },
-        validateData() {
-            axiosPost('isLogin',{username: this.username})
-        },
-        testRcon() {
-            axiosPost('rcon', {username: this.username})
-        },
-        async getInformation() {
-            // 从数据库中获取绑定的所有uuid，然后根据uuid获取游戏名。
-            try {
-                let ids = await axiosPost('idList', {});
-                ids = "" + ids.data;
-                this.idList = ids.split(',');
-                console.log(this.idList)
-                console.log(typeof(this.idList))
-                for (let i = 0; i < this.idList.length; i++) {
-                    const id = this.idList[i];
-                    const info = await axiosPost(`api/username/${id}`, {});
-                    this.nameList.push(info.data.name);
-                }
-                console.log('nameList:');
-                console.log(this.nameList)
-            }
-            catch (e) {
-                console.log(e);
-            }
-        },
-        about() {
-            this.$router.push({path: '/about'});
-        },
-        async getUsername() {
-            const res = await axiosPost('isLogin', {});
-            if (res && res.data.username)
-            this.username = res.data.username
-        },
-        async logout() {
-            await axiosPost('logout', {});
-            this.$router.push({path: '/login'}).catch(err => (console.log(err)));
-        }
-    },
-    mounted() {
-        this.getInformation();
-        this.getUsername();
+<script setup>
+import { ref, onMounted, watch } from "vue";
+import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
+import { post } from "@/utils/axiosService";
+
+const router = useRouter();
+const idList = ref([]);
+const nameList = ref([]);
+const username = ref("游客");
+
+watch(
+  () => username.value,
+  (newVal) => {
+    if (!newVal) {
+      // 使用原生提示或自定义通知组件
+      alert("登录过期！即将跳转至登录页...");
+      router.push("/login");
     }
+  }
+);
+
+const getInformation = async () => {
+  try {
+    // 重置列表，避免重复数据
+    idList.value = [];
+    nameList.value = [];
+
+    // 获取 ID 列表
+    const idsResponse = await post("idList", {});
+    if (!idsResponse.data) {
+      throw new Error("未能获取到账号列表");
+    }
+
+    // 处理 ID 字符串
+    const idsString = String(idsResponse.data).trim();
+    if (!idsString) {
+      // 如果是空字符串，说明没有绑定账号
+      return;
+    }
+
+    // 分割并过滤空值
+    idList.value = idsString.split(",").filter((id) => id && id.trim());
+
+    // 使用 Promise.all 并行获取用户名
+    const userPromises = idList.value.map(async (id) => {
+      try {
+        const info = await post(`api/username/${id}`, {});
+        if (!info.data?.name) {
+          throw new Error(`无法获取 ID ${id} 的用户名`);
+        }
+        return info.data.name;
+      } catch (error) {
+        console.error(`获取用户 ${id} 信息失败:`, error);
+        return null; // 返回 null 表示这个用户获取失败
+      }
+    });
+
+    // 等待所有请求完成并过滤掉失败的结果
+    const names = (await Promise.all(userPromises)).filter(
+      (name) => name !== null
+    );
+
+    // 更新名称列表
+    nameList.value = names;
+
+    // 如果有获取失败的用户名，显示提示
+    if (names.length < idList.value.length) {
+      ElMessage({
+        type: "warning",
+        message: "部分用户信息获取失败，请稍后重试",
+      });
+    }
+  } catch (error) {
+    // 处理主要错误
+    console.error("获取账号信息失败:", error);
+
+    ElMessage({
+      type: "error",
+      message: error.message || "获取账号信息失败，请稍后重试",
+    });
+
+    // 重置状态
+    idList.value = [];
+    nameList.value = [];
+  }
 };
+
+const about = () => {
+  router.push("/about");
+};
+
+const getUsername = async () => {
+  try {
+    const res = await post("isLogin", {});
+
+    // 检查响应格式
+    if (!res || typeof res.data?.username !== "string") {
+      throw new Error("获取用户信息失败，返回数据格式错误");
+    }
+
+    // 更新用户名
+    username.value = res.data.username;
+
+    // 如果用户名为空，可能是登录过期
+    if (!res.data.username) {
+      ElMessage({
+        type: "warning",
+        message: "登录已过期，请重新登录",
+      });
+      router.push("/login");
+    }
+  } catch (error) {
+    console.error("获取用户名失败:", error);
+
+    ElMessage({
+      type: "error",
+      message: error.message || "获取用户信息失败，请重新登录",
+    });
+
+    // 清除用户名
+    username.value = "";
+
+    // 重定向到登录页
+    router.push("/login");
+  }
+};
+
+const logout = async () => {
+  await post("logout", {});
+  router.push("/login").catch((err) => console.error(err));
+};
+
+onMounted(() => {
+  getInformation();
+  getUsername();
+});
 </script>
-
-<style scoped>
-@media (min-width: 784px) {
-  .container {
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    align-content: space-between;
-    width: 70%;
-    height: 70vh;
-    margin: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-    color: white;
-    border-radius: 8px;
-  }
-
-  .logout {
-    position: fixed;
-    bottom: 0;
-    height: 22vh;
-    margin: 24px;
-    display: block;
-    text-align: left;
-    line-height: 24px;
-    font-size: 14px;
-    color: orange;
-  }
-
-  .item {
-    flex: 0 0 auto;
-    margin: 6px;
-  }
-}
-@media (max-width: 784px) {
-  .container {
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    align-content: space-between;
-    width: 95%;
-    height: 75vh;
-    margin: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-    color: white;
-    border-radius: 8px;
-  }
-
-  .logout {
-    position: fixed;
-    bottom: 0;
-    height: 22vh;
-    margin: 24px;
-    display: block;
-    text-align: left;
-    line-height: 24px;
-    font-size: 14px;
-    color: orange;
-  }
-
-  .item {
-    flex: 0 0 auto;
-    margin: 6px;
-  }
-}
-</style>
