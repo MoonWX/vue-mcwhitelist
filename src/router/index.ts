@@ -1,8 +1,8 @@
-import { createWebHistory, createRouter } from "vue-router";
+import { createWebHistory, createRouter, RouteRecordRaw, NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 import { post } from '@/utils/axiosService';
-import Cookies from 'js-cookie';
+import { cookieService } from '@/utils/cookieService';
 
-const routes = [
+const routes: RouteRecordRaw[] = [
     {
         path: "/",
         component: () => import('@/views/Home.vue'),
@@ -37,7 +37,11 @@ const router = createRouter({
 // 不需要登录验证的白名单路由
 const whiteList = ['/login', '/register', '/privacy', '/about'];
 
-// router.beforeEach(async (to, from, next) => {
+// router.beforeEach(async (
+//     to: RouteLocationNormalized,
+//     from: RouteLocationNormalized,
+//     next: NavigationGuardNext
+// ): Promise<void> => {
 //     try {
 //         // 优先检查白名单
 //         if (whiteList.includes(to.path)) {
@@ -45,7 +49,7 @@ const whiteList = ['/login', '/register', '/privacy', '/about'];
 //             return;
 //         }
 
-//         const username = Cookies.get('username');
+//         const username = cookieService.get('username');
 
 //         // 如果没有用户名，直接跳转登录
 //         if (!username) {
@@ -54,7 +58,13 @@ const whiteList = ['/login', '/register', '/privacy', '/about'];
 //         }
 
 //         try {
-//             const loginResponse = await post('isLogin', { username });
+//             interface LoginResponse {
+//                 status: number;
+//                 data: any;
+//                 message?: string;
+//             }
+
+//             const loginResponse: LoginResponse = await post('isLogin', { username });
 //             const isLoggedIn = loginResponse.status === 200;
 
 //             // 已登录用户访问登录/注册页面
@@ -74,13 +84,13 @@ const whiteList = ['/login', '/register', '/privacy', '/about'];
 //             next();
 
 //         } catch (error) {
-//             console.error('登录状态验证失败:', error);
-//             // 验证失败时处理为未登录状态
+//             console.error('登录状态验证失败:', error instanceof Error ? error.message : String(error));
+//             cookieService.remove('username'); // 清除失效的 cookie
 //             next('/login');
 //         }
 
 //     } catch (error) {
-//         console.error('路由守卫执行失败:', error);
+//         console.error('路由守卫执行失败:', error instanceof Error ? error.message : String(error));
 //         next('/login');
 //     }
 // });

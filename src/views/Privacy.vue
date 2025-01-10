@@ -1,4 +1,3 @@
-<!-- eslint-disable -->
 <template>
   <div class="flex flex-col space-y-8 w-full max-w-4xl mx-auto px-4">
     <header>

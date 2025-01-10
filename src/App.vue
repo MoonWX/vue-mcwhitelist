@@ -1,6 +1,9 @@
 <!-- App.vue -->
 <template>
-  <div id="app" class="flex flex-col min-h-screen">
+  <div
+    id="app"
+    class="flex flex-col min-h-screen text-center text-[#2c3e50] font-sans antialiased"
+  >
     <TopLeftIcon />
     <main class="flex-grow flex items-center justify-center p-6">
       <div
@@ -13,7 +16,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import TopLeftIcon from "@/components/TopLeftIcon.vue";
 import Footer from "@/components/Footer.vue";
 </script>
@@ -21,24 +24,17 @@ import Footer from "@/components/Footer.vue";
 <style>
 html,
 body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
   background-image: url("./assets/img/bkg.png");
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
-  z-index: -1;
 }
 
-#app {
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@font-face {
+  font-family: "mcFont";
+  src: url("@/assets/fonts/minecraft.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
 }
 </style>

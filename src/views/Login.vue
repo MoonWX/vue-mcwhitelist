@@ -1,4 +1,3 @@
-<!-- eslint-disable -->
 <template>
   <div class="flex flex-col space-y-8">
     <header>
@@ -30,7 +29,6 @@
         <div class="relative">
           <input
             v-model="formData.password"
-            :type="showPassword ? 'text' : 'password'"
             placeholder="密码"
             :disabled="loading"
             @input="validateField('password')"
@@ -100,11 +98,12 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, computed } from "vue";
 import { useRouter } from "vue-router";
 import { ElNotification } from "element-plus";
 import { post } from "@/utils/axiosService";
+import { cookieService } from "@/utils/cookieService";
 
 // 路由实例
 const router = useRouter();
@@ -112,17 +111,17 @@ const router = useRouter();
 // 状态管理
 const loading = ref(false);
 const showPassword = ref(false);
-const formData = reactive({
+const formData = reactive<FormData>({
   username: "",
   password: "",
 });
-const errors = reactive({
+const errors = reactive<FormErrors>({
   username: "",
   password: "",
 });
 
 // 表单验证规则
-const validationRules = {
+const validationRules: ValidationRules = {
   username: [
     { required: true, message: "请输入用户名" },
     { min: 3, message: "用户名至少需要3个字符" },
@@ -144,8 +143,32 @@ const isFormValid = computed(() => {
   );
 });
 
+interface ValidationRule {
+  required?: boolean;
+  min?: number;
+  max?: number;
+  message: string;
+}
+
+// 定义表单数据的接口
+interface FormData {
+  username: string;
+  password: string;
+}
+
+// 定义错误信息的接口
+interface FormErrors {
+  username: string;
+  password: string;
+}
+
+// 定义验证规则集合的类型
+type ValidationRules = {
+  [K in keyof FormData]: ValidationRule[];
+};
+
 // 字段验证方法
-const validateField = (field) => {
+const validateField = (field: keyof FormData) => {
   const value = formData[field];
   const rules = validationRules[field];
 
@@ -175,7 +198,7 @@ const togglePasswordVisibility = () => {
 };
 
 // 显示通知
-const showNotification = (type, title, message) => {
+const showNotification = (type: 'success' | 'warning' | 'info' | 'error', title: any, message: string) => {
   ElNotification({
     type,
     title,
@@ -211,6 +234,9 @@ const handleSubmit = async () => {
 
     // 处理响应
     if (res.status === 200) {
+      // 设置 cookie，7天过期
+      cookieService.setWithExpiry('username', formData.username, 30);
+
       showNotification("success", "登录成功", "正在跳转至主页...");
 
       // 延迟跳转以显示成功消息
@@ -229,7 +255,7 @@ const handleSubmit = async () => {
     } else {
       throw new Error(res.message || "登录失败");
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error("登录错误:", error);
 
     // 错误消息处理

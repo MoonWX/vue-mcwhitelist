@@ -79,7 +79,7 @@ service.interceptors.response.use(
 );
 
 // HTTP 方法封装
-const http = {
+const http: { [key: string]: (url: string, data?: any) => Promise<any> } = {
     get(url, params) {
         return service.get(url, { params });
     },
@@ -109,26 +109,40 @@ const http = {
     }
 };
 
+// 错误处理返回类型接口
+interface ErrorResponse {
+    status: number;
+    message: string;
+    data: any | null;
+}
+
+// 成功响应类型接口
+interface SuccessResponse {
+    status: number;
+    message: string;
+    data: any;
+}
+
+// API 响应类型
+type ApiResponse = SuccessResponse | ErrorResponse;
+
 // 错误处理函数
-export const handleError = (error) => {
+export const handleError = (error: any): ErrorResponse => {
     if (error.response) {
-        // 服务器返回错误状态码
-        const status = error.response.status;
-        const message = error.response.data?.message || '服务器错误';
+        const status: number = error.response.status;
+        const message: string = error.response.data?.message || '服务器错误';
         return {
             status,
             message,
             data: error.response.data
         };
     } else if (error.request) {
-        // 请求发出但没有收到响应
         return {
             status: 0,
             message: '网络错误，请检查网络连接',
             data: null
         };
     } else {
-        // 请求配置出错
         return {
             status: -1,
             message: error.message || '请求配置错误',
@@ -137,8 +151,16 @@ export const handleError = (error) => {
     }
 };
 
+
+// HTTP 方法类型
+type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'upload';
+
 // 请求方法封装
-export async function request(method, url, data = null) {
+export async function request(
+    method: HttpMethod,
+    url: string,
+    data: any = null
+): Promise<ApiResponse> {
     try {
         const response = await http[method.toLowerCase()](url, data);
         return {
@@ -152,11 +174,20 @@ export async function request(method, url, data = null) {
 }
 
 // 导出便捷方法
-export const get = (url, params) => request('get', url, params);
-export const post = (url, data) => request('post', url, data);
-export const put = (url, data) => request('put', url, data);
-export const del = (url, params) => request('delete', url, params);
-export const upload = (url, file) => http.upload(url, file);
+export const get = (url: string, params?: any): Promise<ApiResponse> =>
+    request('get', url, params);
+
+export const post = (url: string, data?: any): Promise<ApiResponse> =>
+    request('post', url, data);
+
+export const put = (url: string, data?: any): Promise<ApiResponse> =>
+    request('put', url, data);
+
+export const del = (url: string, params?: any): Promise<ApiResponse> =>
+    request('delete', url, params);
+
+export const upload = (url: string, file: File): Promise<any> =>
+    http.upload(url, file);
 
 // 导出 axios 实例
 export default service;

@@ -1,4 +1,3 @@
-<!-- eslint-disable -->
 <template>
   <header class="mb-8">
     <h1 class="text-3xl font-bold text-center text-white">
@@ -41,15 +40,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 import { post } from "@/utils/axiosService";
 
 const router = useRouter();
-const idList = ref([]);
-const nameList = ref([]);
+const idList = ref<string[]>([]);
+const nameList = ref<string[]>([]);
 const username = ref("游客");
 
 watch(
@@ -57,7 +56,7 @@ watch(
   (newVal) => {
     if (!newVal) {
       // 使用原生提示或自定义通知组件
-      alert("登录过期！即将跳转至登录页...");
+      alert("登录过期或未登录！即将跳转至登录页...");
       router.push("/login");
     }
   }
@@ -93,7 +92,7 @@ const getInformation = async () => {
           throw new Error(`无法获取 ID ${id} 的用户名`);
         }
         return info.data.name;
-      } catch (error) {
+      } catch (error: any) {
         console.error(`获取用户 ${id} 信息失败:`, error);
         return null; // 返回 null 表示这个用户获取失败
       }
@@ -114,7 +113,7 @@ const getInformation = async () => {
         message: "部分用户信息获取失败，请稍后重试",
       });
     }
-  } catch (error) {
+  } catch (error: any) {
     // 处理主要错误
     console.error("获取账号信息失败:", error);
 
@@ -133,7 +132,7 @@ const about = () => {
   router.push("/about");
 };
 
-const getUsername = async () => {
+const getUsername = async (): Promise<void> => {
   try {
     const res = await post("isLogin", {});
 
@@ -153,7 +152,7 @@ const getUsername = async () => {
       });
       router.push("/login");
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error("获取用户名失败:", error);
 
     ElMessage({
