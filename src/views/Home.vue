@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
-import { ElMessage } from "element-plus";
+import Message from '@/utils/message';
 import { useRouter } from "vue-router";
 import { post } from "@/utils/axiosService";
 
@@ -108,19 +108,13 @@ const getInformation = async () => {
 
     // 如果有获取失败的用户名，显示提示
     if (names.length < idList.value.length) {
-      ElMessage({
-        type: "warning",
-        message: "部分用户信息获取失败，请稍后重试",
-      });
+      Message.warning("部分用户信息获取失败，请稍后重试");
     }
   } catch (error: any) {
     // 处理主要错误
     console.error("获取账号信息失败:", error);
 
-    ElMessage({
-      type: "error",
-      message: error.message || "获取账号信息失败，请稍后重试",
-    });
+    Message.error(error.message || "获取账号信息失败，请稍后重试");
 
     // 重置状态
     idList.value = [];
@@ -146,19 +140,13 @@ const getUsername = async (): Promise<void> => {
 
     // 如果用户名为空，可能是登录过期
     if (!res.data.username) {
-      ElMessage({
-        type: "warning",
-        message: "登录已过期，请重新登录",
-      });
+      Message.warning("登录已过期，请重新登录");
       router.push("/login");
     }
   } catch (error: any) {
     console.error("获取用户名失败:", error);
 
-    ElMessage({
-      type: "error",
-      message: error.message || "获取用户信息失败，请重新登录",
-    });
+    Message.error(error.message || "获取用户信息失败，请重新登录");
 
     // 清除用户名
     username.value = "";

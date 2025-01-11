@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { ElMessage } from "element-plus";
+import Message from '@/utils/message';
 
 const copied = ref(false);
 
@@ -67,21 +67,13 @@ const copyQQ = async () => {
     await navigator.clipboard.writeText("361033103");
     copied.value = true;
 
-    ElMessage({
-      message: "QQ群号已复制到剪贴板",
-      type: "info",
-      duration: 2000,
-    });
+    Message.info("QQ群号已复制到剪贴板");
 
     setTimeout(() => {
       copied.value = false;
     }, 2000);
   } catch (err) {
-    ElMessage({
-      message: "复制失败，请手动复制",
-      type: "error",
-      duration: 2000,
-    });
+    Message.error("复制失败，请手动复制");
     console.error("复制失败:", err);
   }
 };

@@ -102,7 +102,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
 import { useRouter } from "vue-router";
-import { ElNotification } from "element-plus";
+import Notification from '@/utils/notification';
 import { post } from "@/utils/axiosService";
 import { cookieService } from "@/utils/cookieService";
 
@@ -204,7 +204,7 @@ const showNotification = (
   title: any,
   message: string
 ) => {
-  ElNotification({
+  Notification({
     type,
     title,
     message,

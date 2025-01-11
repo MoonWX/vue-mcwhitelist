@@ -116,7 +116,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
 import { useRouter } from "vue-router";
-import { ElNotification } from "element-plus";
+import Notification from '@/utils/notification';
 import { post } from "@/utils/axiosService";
 
 const router = useRouter();
@@ -236,7 +236,7 @@ const sendVerificationCode = async () => {
       {}
     );
     if (uuidRes && uuidRes.status !== 200) {
-      ElNotification({
+      Notification({
         title: "发送失败",
         message: "请检查您的正版游戏名是否正确",
         type: "error",
@@ -252,7 +252,7 @@ const sendVerificationCode = async () => {
     });
 
     if (res.data.code === 0) {
-      ElNotification({
+      Notification({
         title: "发送成功",
         message: "请查收邮件，如未看到请检查垃圾邮件",
         type: "success",
@@ -261,7 +261,7 @@ const sendVerificationCode = async () => {
       // 开始倒计时
       startCountdown();
     } else {
-      ElNotification({
+      Notification({
         title: "发送失败",
         message: res.data.msg,
         type: "error",
@@ -269,7 +269,7 @@ const sendVerificationCode = async () => {
     }
   } catch (error) {
     console.error("发送验证码错误:", error);
-    ElNotification({
+    Notification({
       title: "发送失败",
       message: "服务器错误，请稍后重试",
       type: "error",
@@ -320,13 +320,13 @@ const handleSubmit = async () => {
     });
 
     if (res.data.result) {
-      ElNotification({
+      Notification({
         title: "验证成功",
         message: "您可以进入游戏了！",
         type: "success",
       });
     } else {
-      ElNotification({
+      Notification({
         title: "验证失败",
         message: res.data.msg,
         type: "error",
@@ -334,7 +334,7 @@ const handleSubmit = async () => {
     }
   } catch (error) {
     console.error("验证错误:", error);
-    ElNotification({
+    Notification({
       title: "验证失败",
       message: "服务器错误，请稍后重试",
       type: "error",
