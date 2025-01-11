@@ -1255,3 +1255,11 @@ video {
     text-align: left;
   }
 }
+
+.\[\&\:\:-ms-reveal\]\:hidden::-ms-reveal {
+  display: none;
+}
+
+.\[\&\:\:-webkit-credentials-auto-fill-button\]\:hidden::-webkit-credentials-auto-fill-button {
+  display: none;
+}

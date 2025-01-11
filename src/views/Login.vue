@@ -29,10 +29,11 @@
         <div class="relative">
           <input
             v-model="formData.password"
+            :type="showPassword ? 'text' : 'password'"
             placeholder="密码"
             :disabled="loading"
             @input="validateField('password')"
-            class="w-full px-4 py-2 bg-white/20 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-all duration-200 pr-10"
+            class="w-full px-4 py-2 bg-white/20 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-all duration-200 pr-10 [&::-ms-reveal]:hidden [&::-webkit-credentials-auto-fill-button]:hidden"
             :class="{ 'ring-2 ring-red-500': errors.password }"
           />
           <button
@@ -198,7 +199,11 @@ const togglePasswordVisibility = () => {
 };
 
 // 显示通知
-const showNotification = (type: 'success' | 'warning' | 'info' | 'error', title: any, message: string) => {
+const showNotification = (
+  type: "success" | "warning" | "info" | "error",
+  title: any,
+  message: string
+) => {
   ElNotification({
     type,
     title,
@@ -235,7 +240,7 @@ const handleSubmit = async () => {
     // 处理响应
     if (res.status === 200) {
       // 设置 cookie，7天过期
-      cookieService.setWithExpiry('username', formData.username, 30);
+      cookieService.setWithExpiry("username", formData.username, 30);
 
       showNotification("success", "登录成功", "正在跳转至主页...");
 

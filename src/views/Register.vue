@@ -29,10 +29,11 @@
         <div class="relative">
           <input
             v-model="formData.password"
+            :type="showPassword ? 'text' : 'password'"
             placeholder="密码"
             :disabled="loading"
             @input="validateField('password')"
-            class="w-full px-4 py-2 bg-white/20 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-all duration-200 pr-10"
+            class="w-full px-4 py-2 bg-white/20 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-all duration-200 pr-10 [&::-ms-reveal]:hidden [&::-webkit-credentials-auto-fill-button]:hidden"
             :class="{ 'ring-2 ring-red-500': errors.password }"
           />
           <!-- 只在输入框有值时显示切换按钮 -->
